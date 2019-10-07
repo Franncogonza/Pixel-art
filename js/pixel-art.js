@@ -99,7 +99,7 @@ $('#grilla-pixeles').mouseup(function() {
 $('#grilla-pixeles div').hover(function() {
     // var color = colorActual;
     if (mouseDown) {
-        $(this).css("background", colorActual);
+        $(this).css("background", indicadorDeColor);
     }
 });
 //Paso 1: Permití borrar la pantalla apretando un botón
