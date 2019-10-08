@@ -102,9 +102,9 @@ $('#grilla-pixeles').mouseup(function() {
 });
 
 //Cuando el mouse pasa por grilla pixeles div activa el evento, y pregunta si mouse esta apretado o no esta apretado, y se reutiliza la funcion pintaGrilla que ya funcionaba bien, si esta apretado pintaGrilla, sino, no hace nada.
-$(container).mousemove(function(evento) {
+$($container).mousemove(function(e) {
     if (mouseDown) {
-        pintaGrilla(evento);
+        pintaGrilla(e);
     }
 });
 
