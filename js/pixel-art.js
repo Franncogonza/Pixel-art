@@ -20,9 +20,13 @@ var nombreColores = ['White', 'LightYellow',
     'DimGray', 'LightSlateGray', 'DarkSlateGray', 'Black'
 ];
 
+//======================== VARIABLES ===============================================================================================
+//==================================================================================================================================
+
 // Variable para guardar el elemento 'color-personalizado el que se elige con la rueda de color.
 var colorPersonalizado = document.getElementById('color-personalizado');
 
+//asigna el color que se elige en la rueda de coolor personalizado
 colorPersonalizado.addEventListener('change',
     (function() {
         // Se guarda el color de la rueda en colorActual
@@ -40,8 +44,14 @@ var grilla = document.getElementById("grilla-pixeles");
 //invoco la función
 gridCreate();
 
-// declaro variable que va a cambiar el color de la grilla y la paleta
+// declaro variable que va a indicarle el color con el que se está pintando
 var indicadorDeColor = document.getElementById("indicador-de-color");
+
+//Todos los divs de la grilla hijos de #cursor-personalizado
+var $container = $("#grilla-pixeles div");
+
+//======================== FUNCIONES Y EVENTOS  ====================================================================================
+//==================================================================================================================================
 
 //Creación de la paleta de colores 
 function paletteCreate() {
@@ -62,9 +72,7 @@ function gridCreate() {
     }
 }
 
-// Paso 1: Seleccioná un color de la paleta y mostralo en el indicador de color
-// Primero, vamos a hacer que nuestro programa permita al usuario seleccionar un color de la paleta. Para eso, necesitamos lograr que, al hacer clic en algún color, el indicador-de-color cambie y refleje la selección.
-
+// Seleccioná un color de la paleta y refleja la seleccion del color en el indicador de color
 paleta.addEventListener("click", cambiaColorPincel);
 
 // guardo en un variable el id del div del pincel que quiero que cambie el color, y le asigno dinamicamente el background del evento, es decir de la variable paleta
@@ -72,66 +80,56 @@ function cambiaColorPincel(e) {
     indicadorDeColor.style.background = e.target.style.background;
 }
 
-// Paso 2: Pintá un pixel de la grilla
-// Un vez que tenemos un color seleccionado en el indicador-de-color se deberá programar la funcionalidad para que el usuario pueda pintar un pixel al hacer clic en un cuadrado de la grilla.
-
+// evento que escucha si se hace click en la grilla, si es true invoca la funcion pintaGrilla
 grilla.addEventListener("click", pintaGrilla);
 
-//guarde en la variable el id del div que indica el color del pincel, y le asigno su background al evento, a grilla-pixeles
+//el background de la grilla va a ser el background que tiene el indicadorDeColor
 function pintaGrilla(e) {
     e.target.style.background = indicadorDeColor.style.background;
 }
 
-// Paso 4: Detectá si el Mouse está Apretado o no
-// Para poder pintar en movimiento, vamos a necesitar una variable que nos diga si el mouse está o no apretado. El valor de esta variable deberá cambiar cada vez que se apriete el mouse y cada vez que se suelte. Tené en cuenta que vas a necesitar más de un evento para detectar cuando se aprieta el mouse y cuando se suelta.
+// Detecta si el Mouse está Apretado o no, arranca en false
+var mouseDown = 0;
 
-// Esta acción no va a tener representación visual por ahora, de eso nos vamos a encargar en el paso siguiente.
-var mouseDown = 1;
-
+// evento que escucha si el mouse esta apretado
 $('#grilla-pixeles').mousedown(function() {
     mouseDown = 1;
 });
 
+//evento que escucha si se suelta el mouse
 $('#grilla-pixeles').mouseup(function() {
     mouseDown = 0;
 });
 
-$('#grilla-pixeles div').hover(function() {
-    // var color = colorActual;
+//Cuando el mouse pasa por grilla pixeles div activa el evento, y pregunta si mouse esta apretado o no esta apretado, y se reutiliza la funcion pintaGrilla que ya funcionaba bien, si esta apretado pintaGrilla, sino, no hace nada.
+$(container).mousemove(function(evento) {
     if (mouseDown) {
-        $(this).css("background", indicadorDeColor);
+        pintaGrilla(evento);
     }
 });
-//Paso 1: Permití borrar la pantalla apretando un botón
-//Todos los divs de la grilla hijos de #cursor-personalizado
-var $container = $("#grilla-pixeles div");
-//Borrar todo
+
+
+//Borra lo que este en la pantalla de la grilla
 $("#borrar").click(function() {
     $container.animate({ "background-color": 'white' }, 1200);
 });
 
-
-// Paso 2: Cargá a los superhéroes en forma de píxeles
-
+//Carga a los superhéroes en forma de píxeles al hacer click en la imagen de cada superheroe
 $("#batman").click(function() {
     cargarSuperheroe(batman);
 });
-
 
 $("#wonder").click(function() {
     cargarSuperheroe(wonder);
 });
 
-
 $("#flash").click(function() {
     cargarSuperheroe(flash);
 });
-
 
 $("#invisible").click(function() {
     cargarSuperheroe(invisible);
 });
 
-// Paso 3: Habilitá la descarga de cada obra de arte
-//Guardar pantalla
+//Habilita la descarga del dibujo en formato png
 $("#guardar").click(guardarPixelArt);
